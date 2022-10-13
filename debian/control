@@ -1,0 +1,37 @@
+Source: node-d3-array
+Section: javascript
+Priority: optional
+Maintainer: Debian Javascript Maintainers <pkg-javascript-devel@lists.alioth.debian.org>
+Uploaders: Pirate Praveen <praveen@debian.org>
+Build-Depends:
+ debhelper-compat (= 13)
+ , nodejs
+ , pkg-js-tools
+ , node-tape
+ , node-seedrandom
+ , rollup
+ , node-rollup-plugin-terser
+Standards-Version: 4.5.1
+Rules-Requires-Root: no
+Homepage: https://d3js.org/d3-array/
+Vcs-Git: https://salsa.debian.org/js-team/node-d3-array.git
+Vcs-Browser: https://salsa.debian.org/js-team/node-d3-array
+Testsuite: autopkgtest-pkg-nodejs
+
+Package: node-d3-array
+Architecture: all
+Depends:
+ ${misc:Depends}
+ , nodejs
+Multi-Arch: foreign
+Description: Array manipulation, ordering, searching, summarizing, etc
+ Data in JavaScript is often represented by an array, and so one tends to
+ manipulate arrays when visualizing or analyzing data. Some common forms of
+ manipulation include taking a contiguous slice (subset) of an array, filtering
+ an array using a predicate function, and mapping an array to a parallel set of
+ values using a transform function.
+ .
+ Before looking at the set of utilities that this module provides, familiarize
+ yourself with the powerful array methods built-in to JavaScript.
+ .
+ Node.js is an event-based server-side JavaScript engine.
