@@ -1,5 +1,14 @@
+import {nodeResolve} from "@rollup/plugin-node-resolve";
+import {readFileSync} from "fs";
 import {terser} from "rollup-plugin-terser";
 import * as meta from "./package.json";
+
+// Extract copyrights from the LICENSE.
+const copyright = readFileSync("./LICENSE", "utf-8")
+  .split(/\n/g)
+  .filter(line => /^copyright\s+/i.test(line))
+  .map(line => line.replace(/^copyright\s+/i, ""))
+  .join(", ");
 
 const config = {
   input: "src/index.js",
@@ -10,10 +19,12 @@ const config = {
     format: "umd",
     indent: false,
     extend: true,
-    banner: `// ${meta.homepage} v${meta.version} Copyright ${(new Date).getFullYear()} ${meta.author.name}`,
+    banner: `// ${meta.homepage} v${meta.version} Copyright ${copyright}`,
     globals: Object.assign({}, ...Object.keys(meta.dependencies || {}).filter(key => /^d3-/.test(key)).map(key => ({[key]: "d3"})))
   },
-  plugins: []
+  plugins: [
+    nodeResolve()
+  ]
 };
 
 export default [
@@ -29,6 +40,12 @@ export default [
       terser({
         output: {
           preamble: config.output.banner
+        },
+        mangle: {
+          reserved: [
+            "InternMap",
+            "InternSet"
+          ]
         }
       })
     ]
