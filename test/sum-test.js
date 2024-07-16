@@ -1,98 +1,87 @@
-var tape = require("tape"),
-    arrays = require("../");
+import assert from "assert";
+import {sum} from "../src/index.js";
 
-tape("sum(array) returns the sum of the specified numbers", function(test) {
-  test.equal(arrays.sum([1]), 1);
-  test.equal(arrays.sum([5, 1, 2, 3, 4]), 15);
-  test.equal(arrays.sum([20, 3]), 23);
-  test.equal(arrays.sum([3, 20]), 23);
-  test.end();
+it("sum(array) returns the sum of the specified numbers", () => {
+  assert.strictEqual(sum([1]), 1);
+  assert.strictEqual(sum([5, 1, 2, 3, 4]), 15);
+  assert.strictEqual(sum([20, 3]), 23);
+  assert.strictEqual(sum([3, 20]), 23);
 });
 
-tape("sum(array) observes values that can be coerced to numbers", function(test) {
-  test.equal(arrays.sum(["20", "3"]), 23);
-  test.equal(arrays.sum(["3", "20"]), 23);
-  test.equal(arrays.sum(["3", 20]), 23);
-  test.equal(arrays.sum([20, "3"]), 23);
-  test.equal(arrays.sum([3, "20"]), 23);
-  test.equal(arrays.sum(["20", 3]), 23);
-  test.end();
+it("sum(array) observes values that can be coerced to numbers", () => {
+  assert.strictEqual(sum(["20", "3"]), 23);
+  assert.strictEqual(sum(["3", "20"]), 23);
+  assert.strictEqual(sum(["3", 20]), 23);
+  assert.strictEqual(sum([20, "3"]), 23);
+  assert.strictEqual(sum([3, "20"]), 23);
+  assert.strictEqual(sum(["20", 3]), 23);
 });
 
-tape("sum(array) ignores non-numeric values", function(test) {
-  test.equal(arrays.sum(["a", "b", "c"]), 0);
-  test.equal(arrays.sum(["a", 1, "2"]), 3);
-  test.end();
+it("sum(array) ignores non-numeric values", () => {
+  assert.strictEqual(sum(["a", "b", "c"]), 0);
+  assert.strictEqual(sum(["a", 1, "2"]), 3);
 });
 
-tape("sum(array) ignores null, undefined and NaN", function(test) {
-  test.equal(arrays.sum([NaN, 1, 2, 3, 4, 5]), 15);
-  test.equal(arrays.sum([1, 2, 3, 4, 5, NaN]), 15);
-  test.equal(arrays.sum([10, null, 3, undefined, 5, NaN]), 18);
-  test.end();
+it("sum(array) ignores null, undefined and NaN", () => {
+  assert.strictEqual(sum([NaN, 1, 2, 3, 4, 5]), 15);
+  assert.strictEqual(sum([1, 2, 3, 4, 5, NaN]), 15);
+  assert.strictEqual(sum([10, null, 3, undefined, 5, NaN]), 18);
 });
 
-tape("sum(array) returns zero if there are no numbers", function(test) {
-  test.equal(arrays.sum([]), 0);
-  test.equal(arrays.sum([NaN]), 0);
-  test.equal(arrays.sum([undefined]), 0);
-  test.equal(arrays.sum([undefined, NaN]), 0);
-  test.equal(arrays.sum([undefined, NaN, {}]), 0);
-  test.end();
+it("sum(array) returns zero if there are no numbers", () => {
+  assert.strictEqual(sum([]), 0);
+  assert.strictEqual(sum([NaN]), 0);
+  assert.strictEqual(sum([undefined]), 0);
+  assert.strictEqual(sum([undefined, NaN]), 0);
+  assert.strictEqual(sum([undefined, NaN, {}]), 0);
 });
 
-tape("sum(array, f) returns the sum of the specified numbers", function(test) {
-  test.equal(arrays.sum([1].map(box), unbox), 1);
-  test.equal(arrays.sum([5, 1, 2, 3, 4].map(box), unbox), 15);
-  test.equal(arrays.sum([20, 3].map(box), unbox), 23);
-  test.equal(arrays.sum([3, 20].map(box), unbox), 23);
-  test.end();
+it("sum(array, f) returns the sum of the specified numbers", () => {
+  assert.strictEqual(sum([1].map(box), unbox), 1);
+  assert.strictEqual(sum([5, 1, 2, 3, 4].map(box), unbox), 15);
+  assert.strictEqual(sum([20, 3].map(box), unbox), 23);
+  assert.strictEqual(sum([3, 20].map(box), unbox), 23);
 });
 
-tape("sum(array, f) observes values that can be coerced to numbers", function(test) {
-  test.equal(arrays.sum(["20", "3"].map(box), unbox), 23);
-  test.equal(arrays.sum(["3", "20"].map(box), unbox), 23);
-  test.equal(arrays.sum(["3", 20].map(box), unbox), 23);
-  test.equal(arrays.sum([20, "3"].map(box), unbox), 23);
-  test.equal(arrays.sum([3, "20"].map(box), unbox), 23);
-  test.equal(arrays.sum(["20", 3].map(box), unbox), 23);
-  test.end();
+it("sum(array, f) observes values that can be coerced to numbers", () => {
+  assert.strictEqual(sum(["20", "3"].map(box), unbox), 23);
+  assert.strictEqual(sum(["3", "20"].map(box), unbox), 23);
+  assert.strictEqual(sum(["3", 20].map(box), unbox), 23);
+  assert.strictEqual(sum([20, "3"].map(box), unbox), 23);
+  assert.strictEqual(sum([3, "20"].map(box), unbox), 23);
+  assert.strictEqual(sum(["20", 3].map(box), unbox), 23);
 });
 
-tape("sum(array, f) ignores non-numeric values", function(test) {
-  test.equal(arrays.sum(["a", "b", "c"].map(box), unbox), 0);
-  test.equal(arrays.sum(["a", 1, "2"].map(box), unbox), 3);
-  test.end();
+it("sum(array, f) ignores non-numeric values", () => {
+  assert.strictEqual(sum(["a", "b", "c"].map(box), unbox), 0);
+  assert.strictEqual(sum(["a", 1, "2"].map(box), unbox), 3);
 });
 
-tape("sum(array, f) ignores null, undefined and NaN", function(test) {
-  test.equal(arrays.sum([NaN, 1, 2, 3, 4, 5].map(box), unbox), 15);
-  test.equal(arrays.sum([1, 2, 3, 4, 5, NaN].map(box), unbox), 15);
-  test.equal(arrays.sum([10, null, 3, undefined, 5, NaN].map(box), unbox), 18);
-  test.end();
+it("sum(array, f) ignores null, undefined and NaN", () => {
+  assert.strictEqual(sum([NaN, 1, 2, 3, 4, 5].map(box), unbox), 15);
+  assert.strictEqual(sum([1, 2, 3, 4, 5, NaN].map(box), unbox), 15);
+  assert.strictEqual(sum([10, null, 3, undefined, 5, NaN].map(box), unbox), 18);
 });
 
-tape("sum(array, f) returns zero if there are no numbers", function(test) {
-  test.equal(arrays.sum([].map(box), unbox), 0);
-  test.equal(arrays.sum([NaN].map(box), unbox), 0);
-  test.equal(arrays.sum([undefined].map(box), unbox), 0);
-  test.equal(arrays.sum([undefined, NaN].map(box), unbox), 0);
-  test.equal(arrays.sum([undefined, NaN, {}].map(box), unbox), 0);
-  test.end();
+it("sum(array, f) returns zero if there are no numbers", () => {
+  assert.strictEqual(sum([].map(box), unbox), 0);
+  assert.strictEqual(sum([NaN].map(box), unbox), 0);
+  assert.strictEqual(sum([undefined].map(box), unbox), 0);
+  assert.strictEqual(sum([undefined, NaN].map(box), unbox), 0);
+  assert.strictEqual(sum([undefined, NaN, {}].map(box), unbox), 0);
 });
 
-tape("sum(array, f) passes the accessor d, i, and array", function(test) {
-  var results = [], array = ["a", "b", "c"];
-  arrays.sum(array, function(d, i, array) { results.push([d, i, array]); });
-  test.deepEqual(results, [["a", 0, array], ["b", 1, array], ["c", 2, array]]);
-  test.end();
+it("sum(array, f) passes the accessor d, i, and array", () => {
+  const results = [];
+  const array = ["a", "b", "c"];
+  sum(array, (d, i, array) => results.push([d, i, array]));
+  assert.deepStrictEqual(results, [["a", 0, array], ["b", 1, array], ["c", 2, array]]);
 });
 
-tape("sum(array, f) uses the global context", function(test) {
-  var results = [];
-  arrays.sum([1, 2], function() { results.push(this); });
-  test.deepEqual(results, [global, global]);
-  test.end();
+it("sum(array, f) uses the undefined context", () => {
+  const results = [];
+  sum([1, 2], function() { results.push(this); });
+  assert.deepStrictEqual(results, [undefined, undefined]);
 });
 
 function box(value) {

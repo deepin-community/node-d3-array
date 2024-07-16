@@ -3,26 +3,25 @@ Section: javascript
 Priority: optional
 Maintainer: Debian Javascript Maintainers <pkg-javascript-devel@lists.alioth.debian.org>
 Uploaders: Pirate Praveen <praveen@debian.org>
-Build-Depends:
- debhelper-compat (= 13)
- , nodejs
- , pkg-js-tools
- , node-tape
+Build-Depends: debhelper-compat (= 13)
+ , dh-sequence-nodejs (>= 0.12.7~)
+ , mocha <!nocheck>
+ , node-d3-dsv <!nocheck>
+ , node-rollup-plugin-node-resolve
+ , node-rollup-plugin-terser
  , node-seedrandom
  , rollup
- , node-rollup-plugin-terser
-Standards-Version: 4.5.1
-Rules-Requires-Root: no
-Homepage: https://d3js.org/d3-array/
-Vcs-Git: https://salsa.debian.org/js-team/node-d3-array.git
+Standards-Version: 4.6.1
 Vcs-Browser: https://salsa.debian.org/js-team/node-d3-array
+Vcs-Git: https://salsa.debian.org/js-team/node-d3-array.git
+Homepage: https://d3js.org/d3-array/
 Testsuite: autopkgtest-pkg-nodejs
+Rules-Requires-Root: no
 
 Package: node-d3-array
 Architecture: all
-Depends:
- ${misc:Depends}
- , nodejs
+Depends: ${misc:Depends}
+Provides: ${nodejs:Provides}
 Multi-Arch: foreign
 Description: Array manipulation, ordering, searching, summarizing, etc
  Data in JavaScript is often represented by an array, and so one tends to

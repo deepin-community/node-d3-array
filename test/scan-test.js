@@ -1,46 +1,41 @@
-var tape = require("tape"),
-    arrays = require("../");
+import assert from "assert";
+import {descending, scan} from "../src/index.js";
 
-tape("scan(array) compares using natural order", function(test) {
-  test.strictEqual(arrays.scan([0, 1]), 0);
-  test.strictEqual(arrays.scan([1, 0]), 1);
-  test.strictEqual(arrays.scan([0, "1"]), 0);
-  test.strictEqual(arrays.scan(["1", 0]), 1);
-  test.strictEqual(arrays.scan(["10", "2"]), 0);
-  test.strictEqual(arrays.scan(["2", "10"]), 1);
-  test.strictEqual(arrays.scan(["10", "2", NaN]), 0);
-  test.strictEqual(arrays.scan([NaN, "10", "2"]), 1);
-  test.strictEqual(arrays.scan(["2", NaN, "10"]), 2);
-  test.strictEqual(arrays.scan([2, NaN, 10]), 0);
-  test.strictEqual(arrays.scan([10, 2, NaN]), 1);
-  test.strictEqual(arrays.scan([NaN, 10, 2]), 2);
-  test.end();
+it("scan(array) compares using natural order", () => {
+  assert.strictEqual(scan([0, 1]), 0);
+  assert.strictEqual(scan([1, 0]), 1);
+  assert.strictEqual(scan([0, "1"]), 0);
+  assert.strictEqual(scan(["1", 0]), 1);
+  assert.strictEqual(scan(["10", "2"]), 0);
+  assert.strictEqual(scan(["2", "10"]), 1);
+  assert.strictEqual(scan(["10", "2", NaN]), 0);
+  assert.strictEqual(scan([NaN, "10", "2"]), 1);
+  assert.strictEqual(scan(["2", NaN, "10"]), 2);
+  assert.strictEqual(scan([2, NaN, 10]), 0);
+  assert.strictEqual(scan([10, 2, NaN]), 1);
+  assert.strictEqual(scan([NaN, 10, 2]), 2);
 });
 
-tape("scan(array, compare) compares using the specified compare function", function(test) {
+it("scan(array, compare) compares using the specified compare function", () => {
   var a = {name: "a"}, b = {name: "b"};
-  test.strictEqual(arrays.scan([a, b], function(a, b) { return a.name.localeCompare(b.name); }), 0);
-  test.strictEqual(arrays.scan([1, 0], arrays.descending), 0);
-  test.strictEqual(arrays.scan(["1", 0], arrays.descending), 0);
-  test.strictEqual(arrays.scan(["2", "10"], arrays.descending), 0);
-  test.strictEqual(arrays.scan(["2", NaN, "10"], arrays.descending), 0);
-  test.strictEqual(arrays.scan([2, NaN, 10], arrays.descending), 2);
-  test.end();
+  assert.strictEqual(scan([a, b], (a, b) => a.name.localeCompare(b.name)), 0);
+  assert.strictEqual(scan([1, 0], descending), 0);
+  assert.strictEqual(scan(["1", 0], descending), 0);
+  assert.strictEqual(scan(["2", "10"], descending), 0);
+  assert.strictEqual(scan(["2", NaN, "10"], descending), 0);
+  assert.strictEqual(scan([2, NaN, 10], descending), 2);
 });
 
-tape("scan(array) returns undefined if the array is empty", function(test) {
-  test.strictEqual(arrays.scan([]), undefined);
-  test.end();
+it("scan(array) returns undefined if the array is empty", () => {
+  assert.strictEqual(scan([]), undefined);
 });
 
-tape("scan(array) returns undefined if the array contains only incomparable values", function(test) {
-  test.strictEqual(arrays.scan([NaN, undefined]), undefined);
-  test.strictEqual(arrays.scan([NaN, "foo"], function(a, b) { return a - b; }), undefined);
-  test.end();
+it("scan(array) returns undefined if the array contains only incomparable values", () => {
+  assert.strictEqual(scan([NaN, undefined]), undefined);
+  assert.strictEqual(scan([NaN, "foo"], (a, b) => a - b), undefined);
 });
 
-tape("scan(array) returns the first of equal values", function(test) {
-  test.strictEqual(arrays.scan([2, 2, 1, 1, 0, 0, 0, 3, 0]), 4);
-  test.strictEqual(arrays.scan([3, 2, 2, 1, 1, 0, 0, 0, 3, 0], arrays.descending), 0);
-  test.end();
+it("scan(array) returns the first of equal values", () => {
+  assert.strictEqual(scan([2, 2, 1, 1, 0, 0, 0, 3, 0]), 4);
+  assert.strictEqual(scan([3, 2, 2, 1, 1, 0, 0, 0, 3, 0], descending), 0);
 });

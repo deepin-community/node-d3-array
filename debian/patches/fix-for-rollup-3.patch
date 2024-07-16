@@ -1,0 +1,29 @@
+Description: fix for rollup 3
+Author: Yadd <yadd@debian.org>
+Bug-Debian: https://bugs.debian.org/1022601
+Forwarded: not-needed
+Last-Update: 2022-10-25
+
+--- a/internmap/rollup.config.js
++++ b/internmap/rollup.config.js
+@@ -1,6 +1,7 @@
+ import {readFileSync} from "fs";
+ import {terser} from "rollup-plugin-terser";
+-import * as meta from "./package.json";
++import fs from 'fs';
++const meta = JSON.parse(fs.readFileSync("./package.json"));
+ 
+ // Extract copyrights from the LICENSE.
+ const copyright = readFileSync("./LICENSE", "utf-8")
+--- a/rollup.config.js
++++ b/rollup.config.js
+@@ -1,7 +1,8 @@
+ import {nodeResolve} from "@rollup/plugin-node-resolve";
+ import {readFileSync} from "fs";
+ import {terser} from "rollup-plugin-terser";
+-import * as meta from "./package.json";
++import fs from 'fs';
++const meta = JSON.parse(fs.readFileSync("./package.json"));
+ 
+ // Extract copyrights from the LICENSE.
+ const copyright = readFileSync("./LICENSE", "utf-8")

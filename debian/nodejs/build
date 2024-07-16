@@ -1,0 +1,2 @@
+rollup -c
+mjs2cjs src/index.js

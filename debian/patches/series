@@ -1,1 +1,2 @@
-reproducible_build.diff
+export-commonjs-files.patch
+fix-for-rollup-3.patch

@@ -1,0 +1,38 @@
+Description: export commonjs files
+Author: Yadd <yadd@debian.org>
+Forwarded: not-needed
+Last-Update: 2022-06-01
+
+--- a/internmap/package.json
++++ b/internmap/package.json
+@@ -9,12 +9,13 @@
+     "url": "https://bost.ocks.org/mike"
+   },
+   "type": "module",
+-  "main": "src/index.js",
++  "main": "./dist/index.cjs",
+   "module": "src/index.js",
+   "jsdelivr": "dist/internmap.min.js",
+   "unpkg": "dist/internmap.min.js",
+   "exports": {
+     "umd": "./dist/internmap.min.js",
++    "require": "./dist/index.cjs",
+     "default": "./src/index.js"
+   },
+   "repository": {
+--- a/package.json
++++ b/package.json
+@@ -29,11 +29,12 @@
+     "src/**/*.js"
+   ],
+   "module": "src/index.js",
+-  "main": "src/index.js",
++  "main": "dist/index.cjs",
+   "jsdelivr": "dist/d3-array.min.js",
+   "unpkg": "dist/d3-array.min.js",
+   "exports": {
+     "umd": "./dist/d3-array.min.js",
++    "require": "./dist/index.cjs",
+     "default": "./src/index.js"
+   },
+   "sideEffects": false,
